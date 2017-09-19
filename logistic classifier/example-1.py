@@ -1,7 +1,6 @@
 import tensorflow as tf
 from tensorflow.examples.tutorials.mnist import input_data
 
-
 # Load dataset
 dataset = input_data.read_data_sets("../datasets/MNIST_data/", one_hot=True)
 
@@ -33,8 +32,9 @@ y_pred = tf.nn.softmax(tf.matmul(X, W) + b)
 y_pred_true = tf.argmax(y_pred, axis=1)
 
 cross_entropy = tf.nn.softmax_cross_entropy_with_logits(labels=y, logits=y_pred)
-loss = tf.reduce_mean(cross_entropy)
-optimizer = tf.train.GradientDescentOptimizer(learning_rate=learning_rate).minimize(loss)
+cost = tf.reduce_mean(cross_entropy)
+optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate)
+optimizer = optimizer.minimize(cost)
 
 # Evaluate the model
 correct = tf.equal(y_true, y_pred_true)
@@ -54,4 +54,6 @@ for step in range(num_iter):
 
 overall_accuracy = sess.run(accuracy, feed_dict={X: X_test.images, y: X_test.labels})
 print("Overall accuracy on test set = {:.2%}".format(overall_accuracy))
+
+# Close tensorflow's Session
 sess.close()
