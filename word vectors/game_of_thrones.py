@@ -1,10 +1,11 @@
 import os
-from glob import glob
 import re
-from nltk.tokenize import PunktSentenceTokenizer
 import multiprocessing
-import gensim.models.word2vec as w2v
+from glob import glob
+
 import sklearn.manifold
+import gensim.models.word2vec as w2v
+from nltk.tokenize import PunktSentenceTokenizer
 
 model_path = "trained"
 model_name = os.path.join(model_path, "thrones2vec.w2v")
@@ -13,6 +14,7 @@ book_names = glob("../datasets/data/*.txt")
 corpus = ""
 for book_name in book_names:
     with open(book_name) as f:
+        print(book_name)
         corpus += f.read()
         print("Corpus is now {:,} words long".format(len(corpus)))
 
@@ -61,4 +63,5 @@ thrones2vec.build_vocab(sentences)
 thrones2vec = w2v.Word2Vec.load(model_name)
 man_sim = thrones2vec.most_similar(positive=['man', 'woman'], negative=['girl'], topn=1)
 print(man_sim)
+
 tsne = sklearn.manifold.TSNE(n_components=2, random_state=0)
