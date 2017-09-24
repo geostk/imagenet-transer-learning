@@ -61,7 +61,8 @@ thrones2vec.build_vocab(sentences)
 # thrones2vec.save(model_name)
 
 thrones2vec = w2v.Word2Vec.load(model_name)
-man_sim = thrones2vec.most_similar(positive=['man', 'woman'], negative=['girl'], topn=1)
+man_sim = thrones2vec.most_similar(positive=['man', 'woman'],
+                                   negative=['girl'], topn=1)
 print(man_sim)
 
 tsne = sklearn.manifold.TSNE(n_components=2, random_state=0)
