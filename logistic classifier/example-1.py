@@ -31,7 +31,8 @@ b = tf.Variable(tf.zeros(shape=[num_classes]))
 y_pred = tf.nn.softmax(tf.matmul(X, W) + b)
 y_pred_true = tf.argmax(y_pred, axis=1)
 
-cross_entropy = tf.nn.softmax_cross_entropy_with_logits(labels=y, logits=y_pred)
+cross_entropy = tf.nn.softmax_cross_entropy_with_logits(labels=y,
+                                                        logits=y_pred)
 cost = tf.reduce_mean(cross_entropy)
 optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate)
 optimizer = optimizer.minimize(cost)
@@ -49,10 +50,13 @@ for step in range(num_iter):
     X_batch, y_batch = X_train.next_batch(batch_size=batch_size)
     _ = sess.run(optimizer, feed_dict={X: X_batch, y: y_batch})
     if step % 500 == 0:
-        _accuracy = sess.run(accuracy, feed_dict={X: X_valid.images, y: X_valid.labels})
+        _accuracy = sess.run(accuracy,
+                             feed_dict={X: X_valid.images,
+                                        y: X_valid.labels})
         print('{:.2%}'.format(_accuracy))
 
-overall_accuracy = sess.run(accuracy, feed_dict={X: X_test.images, y: X_test.labels})
+overall_accuracy = sess.run(accuracy,
+                            feed_dict={X: X_test.images, y: X_test.labels})
 print("Overall accuracy on test set = {:.2%}".format(overall_accuracy))
 
 # Close tensorflow's Session
